@@ -5,7 +5,6 @@ cd $(dirname $0)
 
 parameters="$(getopt -o o:s:t:Oh -l out:,css:,title:,help -n examdown.sh -- $@)"
 if [ $? -ne 0 ]; then exit 1; fi # Exit if an argument is incorrect
-echo $parameters
 eval set -- "$parameters"
 
 # Defaults
@@ -23,12 +22,18 @@ while true; do
       TITLE=$2; shift 2 ;;
     -h|--help)
       cat << "EOF"
-Parameters:
--o --out <file>    Save output to <file>
--O                 Save output to a file with the same name of the input file
--s --css <file>    Use <file> as the css for the output document
--t --title <title> Set title of document to <title>
--h --help          Display this help notice
+Markdown + AsciiMath -> PDF
+
+Usage:
+  ./examdown [options] <input-file>
+
+Options:
+  -o, --out <file>    - Save output to <file>
+  -O                  - Save output to a file with the same name of
+                        the input file - NOT YET IMPLEMENTED
+  -s, --css <file>    - Use <file> as the css for the output document
+  -t, --title <title> - Set title of document to <title>
+  -h, --help          - Display this help notice
 EOF
       exit 0 ;;
     --)
