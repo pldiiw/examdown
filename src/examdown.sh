@@ -8,7 +8,7 @@ cd $ORIGINDIR
 # Defaults
 OUTFILE="out.pdf"
 TITLE="Exam of $(date)"
-CSS="$(cat $REPODIR/lib/github.css)"
+CSS="$(cat $REPODIR/lib/github-markdown-css/github-markdown.css)"
 AM_SVG_SRC="$REPODIR/lib/MathJax/MathJax.js?config=AM_SVG-full"
 
 parameters="$(getopt -o o:s:t:Oh -l out:,css:,title:,help -n examdown.sh -- $@)"
