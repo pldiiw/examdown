@@ -1,16 +1,19 @@
 #!/bin/bash
 
 ORIGINDIR="$PWD"
-cd $(dirname $0)
+cd $(dirname $0)/..
+REPODIR="$PWD"
+cd $ORIGINDIR
+
+# Defaults
+OUTFILE="out.pdf"
+TITLE="Exam of $(date)"
+CSS="$(cat $REPODIR/lib/github.css)"
+AM_SVG_SRC="$REPODIR/lib/MathJax/MathJax.js?config=AM_SVG-full"
 
 parameters="$(getopt -o o:s:t:Oh -l out:,css:,title:,help -n examdown.sh -- $@)"
 if [ $? -ne 0 ]; then exit 1; fi # Exit if an argument is incorrect
 eval set -- "$parameters"
-
-# Defaults
-OUTFILE="out.html"
-TITLE="Exam of $(date)"
-CSS="$(cat ../lib/github.css)"
 
 while true; do
   case "$1" in
@@ -43,11 +46,18 @@ EOF
     esac
 done
 
+BODY=$(cat $INFILE | $REPODIR/lib/markdown.bash/markdown.sh)
+
 # Mustache templating variables export
 export TITLE
 export CSS
-export ASCIIMATHMLJS="$(cat ../lib/ASCIIMathML.js)"
-export BODY="$(cat $ORIGINDIR/$INFILE | ../lib/markdown.sh)" # Markdown is converted to
-                                                  # html here
+export AM_SVG_SRC
+export BODY
 
-../lib/mo ../template/template.html > $ORIGINDIR/$OUTFILE # Render html file
+# Render html file
+$REPODIR/lib/mo/mo $REPODIR/template/template.html > /tmp/examdown-temp.html
+# Convert html file to pdf
+wkhtmltopdf --no-stop-slow-scripts --javascript-delay 2000 \
+  /tmp/examdown-temp.html $ORIGINDIR/$OUTFILE
+# Remove temporary html file
+rm -f /tmp/examdown-temp.html

@@ -4,7 +4,14 @@
   <meta charset="utf-8">
   <title>{{TITLE}}</title>
   <style>{{CSS}}</style>
-  <script>{{ASCIIMATHMLJS}}</script>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      asciimath2jax: {
+        delimiters: [ [ '$', '$' ] ]
+      }
+    });
+  </script>
+  <script type="text/javascript" src="{{AM_SVG_SRC}}"></script>
 </head>
 <body>
   {{BODY}}
