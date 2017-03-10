@@ -1,32 +1,31 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-ORIGINDIR="$PWD"
-cd "$(dirname "$0")/.." || exit
-REPODIR="$PWD"
-cd "$ORIGINDIR" || exit
+set -e
 
-# Defaults
-BIGO_OPTION=0
-OUTFILE="out.pdf"
-TITLE="Exam of $(date)"
-CSS="$(cat "$REPODIR/lib/github-markdown-css/github-markdown.css")"
-AM_SVG_SRC="$REPODIR/lib/MathJax/MathJax.js?config=AM_SVG-full"
-
-parameters="$(getopt -o o:s:t:Oh -l out:,css:,title:,help -n examdown.sh -- "$@")"
-
-if [ $? -ne 0 ]; then exit 1; fi # Exit if an argument is incorrect
-eval set -- "$parameters"
+short='o:s:t:Oh'
+long='out:,css:,title:,help'
+parsed=$(getopt -o "$short" -l "$long" -n "$0" -- "$@")
+if [ $? -ne 0 ]; then exit 1; fi # If getopt fucked up
+eval set -- "$parsed"
 
 while true; do
   case "$1" in
     -o|--out)
-      OUTFILE="$2"; shift 2 ;;
+      out="$2"
+      shift 2
+      ;;
     -O)
-      BIGO_OPTION=1; shift 1 ;;
+      bigo_option='y'
+      shift
+      ;;
     -s|--css)
-      CSS="$(cat "$2")"; shift 2 ;;
+      css="$2"
+      shift 2
+      ;;
     -t|--title)
-      TITLE="$2"; shift 2 ;;
+      title="$2"
+      shift 2
+      ;;
     -h|--help)
       cat << "EOF"
 Markdown + AsciiMath -> PDF
@@ -36,36 +35,44 @@ Usage:
 
 Options:
   -o, --out <file>    - Save output to <file>
-  -O                  - Save output to a file with the same name of
-                        the input file
+  -O                  - Save output to a file with the same name and
+                        in the same directory as the input file
   -s, --css <file>    - Use <file> as the css for the output document
   -t, --title <title> - Set title of document to <title>
   -h, --help          - Display this help notice
 EOF
-      exit 0 ;;
+      exit 0
+      ;;
     --)
-      INFILE="$2"; shift 2 ;;
+      in="$2"
+      break
+      ;;
     *)
-      break ;;
+      echo "Unrecognized option: $1"
+      exit 1
+      ;;
     esac
 done
 
-BODY="$("$REPODIR"/lib/markdown.bash/markdown.sh "$INFILE")"
-
-if [ $BIGO_OPTION -eq 1 ]; then
-  OUTFILE="$(basename "$INFILE" .md).pdf"
-fi
+origindir="$PWD"
+repodir="${0%/*/*}"
+out="${out:-${bigo_option:+${in%.*}.pdf}}"
+title="${title:-Exam of $(date)}"
+css="${css:-$repodir/lib/github-markdown-css/github-markdown.css}"
+am_svg="$repodir/lib/MathJax/MathJax.js?config=AM_SVG-full"
+body="$("$repodir"/lib/markdown.bash/markdown.sh "$in")"
 
 # Mustache templating variables export
-export TITLE
-export CSS
-export AM_SVG_SRC
-export BODY
+export title
+export css
+export am_svg
+export body
 
 # Render html file
-"$REPODIR"/lib/mo/mo "$REPODIR"/template/template.html > /tmp/examdown-temp.html
+"$repodir"/lib/mo/mo "$repodir"/template/template.html > \
+  /tmp/examdown-temp.html
 # Convert html file to pdf
 wkhtmltopdf --no-stop-slow-scripts --javascript-delay 3000 \
-  /tmp/examdown-temp.html "$ORIGINDIR"/"$OUTFILE"
+  /tmp/examdown-temp.html "$origindir/${out:-out.pdf}"
 # Remove temporary html file
 rm -f /tmp/examdown-temp.html
