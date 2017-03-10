@@ -70,9 +70,9 @@ export body
 
 # Render html file
 "$repodir"/lib/mo/mo "$repodir"/template/template.html > \
-  /tmp/examdown-temp.html
+  examdown-temp.html
 # Convert html file to pdf
 wkhtmltopdf --no-stop-slow-scripts --javascript-delay 3000 \
-  /tmp/examdown-temp.html "$origindir/${out:-out.pdf}"
+  examdown-temp.html "$origindir/${out:-out.pdf}"
 # Remove temporary html file
-rm -f /tmp/examdown-temp.html
+rm -f examdown-temp.html
