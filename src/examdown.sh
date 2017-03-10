@@ -2,8 +2,8 @@
 
 set -e
 
-short='o:s:t:Oh'
-long='out:,css:,title:,help'
+short='o:s:t:d:Oh'
+long='out:,css:,title:,delay:,help'
 parsed=$(getopt -o "$short" -l "$long" -n "$0" -- "$@")
 if [ $? -ne 0 ]; then exit 1; fi # If getopt fucked up
 eval set -- "$parsed"
@@ -26,6 +26,10 @@ while true; do
       title="$2"
       shift 2
       ;;
+    -d|--delay)
+      delay="$2"
+      shift 2
+      ;;
     -h|--help)
       cat << "EOF"
 Markdown + AsciiMath -> PDF
@@ -34,12 +38,16 @@ Usage:
   ./examdown [options] <input-file>
 
 Options:
-  -o, --out <file>    - Save output to <file>
+  -o, --out <file>    - Save output to <file>. Defaults to 'out.pdf'.
   -O                  - Save output to a file with the same name and
-                        in the same directory as the input file
-  -s, --css <file>    - Use <file> as the css for the output document
-  -t, --title <title> - Set title of document to <title>
-  -h, --help          - Display this help notice
+                        in the same directory as the input file.
+  -s, --css <file>    - Use <file> as the CSS for the output document.
+                        If unspecified, will use a built-in CSS file.
+  -t, --title <title> - Set title of document to <title>.
+  -d, --delay <ms>    - Wait specified amount of milliseconds for the
+                        javascript to render the math equations.
+                        Defaults to 3000.
+  -h, --help          - Display this help notice.
 EOF
       exit 0
       ;;
@@ -72,7 +80,7 @@ export body
 "$repodir"/lib/mo/mo "$repodir"/template/template.html > \
   examdown-temp.html
 # Convert html file to pdf
-wkhtmltopdf --no-stop-slow-scripts --javascript-delay 3000 \
+wkhtmltopdf --no-stop-slow-scripts --javascript-delay ${delay:-3000} \
   examdown-temp.html "$origindir/${out:-out.pdf}"
 # Remove temporary html file
 rm -f examdown-temp.html
