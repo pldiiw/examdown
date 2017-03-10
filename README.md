@@ -52,5 +52,6 @@ For the code style, please stick to [Bahamas10' Bash Style Guide] and use
 
 This repository is under the Unlicense, see LICENSE file for more information.
 
+[AsciiMath]: http://asciimath.org/
 [Bahamas10' Bash Style Guide]: https://github.com/bahamas10/bash-style-guide
 [Shellcheck]: https://github.com/koalaman/shellcheck
