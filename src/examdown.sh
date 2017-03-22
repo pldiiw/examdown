@@ -68,7 +68,7 @@ out="${out:-${bigo_option:+${in%.*}.pdf}}"
 title="${title:-Exam of $(date)}"
 css="${css:-$repodir/vendor/github-markdown-css/github-markdown.css}"
 am_svg="$repodir/vendor/MathJax/MathJax.js?config=AM_SVG-full"
-body="$(cmark -t html "$in")"
+body="$(cmark -e table -e strikethrough -e autolink --smart -t html "$in")"
 
 cat <<EOF > examdown-temp.html
 <!DOCTYPE html>
