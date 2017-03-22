@@ -66,21 +66,34 @@ origindir="$PWD"
 repodir="${0%/*/*}"
 out="${out:-${bigo_option:+${in%.*}.pdf}}"
 title="${title:-Exam of $(date)}"
-css="${css:-$repodir/lib/github-markdown-css/github-markdown.css}"
-am_svg="$repodir/lib/MathJax/MathJax.js?config=AM_SVG-full"
-body="$("$repodir"/lib/markdown.bash/markdown.sh "$in")"
+css="${css:-$repodir/vendor/github-markdown-css/github-markdown.css}"
+am_svg="$repodir/vendor/MathJax/MathJax.js?config=AM_SVG-full"
+body="$(cmark -t html "$in")"
 
-# Mustache templating variables export
-export title
-export css
-export am_svg
-export body
+cat <<EOF > examdown-temp.html
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>$title</title>
+  <link rel="stylesheet" href="$css" />
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      asciimath2jax: {
+        delimiters: [ [ '$', '$' ] ]
+      }
+    });
+  </script>
+  <script src="$am_svg"></script>
+</head>
+<body class="markdown-body">
+  $body
+</body>
+</html>
+EOF
 
-# Render html file
-"$repodir"/lib/mo/mo "$repodir"/template/template.html > \
-  examdown-temp.html
 # Convert html file to pdf
-wkhtmltopdf --no-stop-slow-scripts --javascript-delay ${delay:-3000} \
+wkhtmltopdf --no-stop-slow-scripts --javascript-delay "${delay:-3000}" \
   examdown-temp.html "$origindir/${out:-out.pdf}"
 # Remove temporary html file
 rm -f examdown-temp.html

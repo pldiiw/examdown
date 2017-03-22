@@ -1,12 +1,9 @@
-[submodule "lib/markdown.bash"]
-	path = lib/markdown.bash
-	url = https://github.com/chadbraunduin/markdown.bash
-[submodule "lib/mo"]
-	path = lib/mo
-	url = https://github.com/tests-always-included/mo
 [submodule "lib/MathJax"]
-	path = lib/MathJax
+	path = vendor/MathJax
 	url = https://github.com/mathjax/MathJax
 [submodule "lib/github-markdown-css"]
-	path = lib/github-markdown-css
+	path = vendor/github-markdown-css
 	url = https://github.com/sindresorhus/github-markdown-css.git
+[submodule "lib/cmark"]
+	path = vendor/cmark
+	url = https://github.com/github/cmark
