@@ -70,7 +70,7 @@ $ ./install.sh /usr/local
 ```
 
 If you installed examdown to some gloomy path, be sure that the `bin` folder
-where `examdown` lies is in your path.  
+where `examdown` lies is in your `$PATH` variable.  
 Check that the installation worked:
 
 ```
