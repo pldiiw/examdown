@@ -35,7 +35,7 @@ while true; do
 Markdown + AsciiMath -> PDF
 
 Usage:
-  ./examdown [options] <input-file>
+  examdown [options] <input-file>
 
 Options:
   -o, --out <file>    - Save output to <file>. Defaults to 'out.pdf'.
