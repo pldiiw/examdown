@@ -5,7 +5,7 @@ set -e
 short='o:s:t:d:Oh'
 long='out:,css:,title:,delay:,help'
 parsed=$(getopt -o "$short" -l "$long" -n "$0" -- "$@")
-if [ $? -ne 0 ]; then exit 1; fi # If getopt fucked up
+if [[ $? -ne 0 ]]; then exit 1; fi # If getopt fucked up
 eval set -- "$parsed"
 
 while true; do
