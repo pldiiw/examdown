@@ -4,6 +4,3 @@
 [submodule "lib/github-markdown-css"]
 	path = vendor/github-markdown-css
 	url = https://github.com/sindresorhus/github-markdown-css.git
-[submodule "lib/cmark"]
-	path = vendor/cmark
-	url = https://github.com/github/cmark
