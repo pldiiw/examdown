@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
-./src/examdown.sh -O test/test.md
+./build/examdown/bin/examdown -O test/test.md
 xdg-open test/test.pdf
