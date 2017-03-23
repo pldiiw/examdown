@@ -105,9 +105,9 @@ Options:
 
 ## Contribute
 
-Any suggestion or improvement is welcome!
+Any suggestion or improvement is welcome!  
+Open an issue and we will discuss about it!
 
-To work on a new feature, fork, create a new branch, commit and open a PR.  
 For the code style, please stick to [Bahamas10' Bash Style Guide] and use
 [Shellcheck] as a linter.
 
