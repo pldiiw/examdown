@@ -79,6 +79,12 @@ $ examdown --help
 
 You're done!
 
+If you want to uninstall examdown, use the `uninstall.sh` script:
+
+```
+$ ./uninstall.sh
+```
+
 ## Usage
 
 It is intended to be quite straightforward.
