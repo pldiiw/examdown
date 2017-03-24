@@ -87,7 +87,7 @@ $ ./uninstall.sh
 
 ## Usage
 
-It is intended to be quite straightforward.
+See [test/test.md](test/test.md) for an example.
 
 ```
 $ examdown --help
