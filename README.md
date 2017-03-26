@@ -87,6 +87,15 @@ $ ./uninstall.sh
 
 ## Usage
 
+The following syntax is supported in the Markdown files:
+ * CommonMark: http://commonmark.org/help/
+ * Tables: https://github.github.com/gfm/#tables-extension-
+ * Strikethrough: https://github.github.com/gfm/#strikethrough-extension-
+ * Autolinks: https://github.github.com/gfm/#autolinks-extension-
+ * Underlining using `~~`: `~~I'm underlined~~`
+ * Equations using AsciiMath:  http://asciimath.org/ -- equations are delimited
+   using `$`: `$x^2$`
+
 See [test/test.md](test/test.md) for an example.
 
 ```
