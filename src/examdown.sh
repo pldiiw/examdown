@@ -68,7 +68,8 @@ out="${out:-${bigo_option:+${in%.*}.pdf}}"
 title="${title:-Exam of $(date)}"
 css="${css:-$prefix/lib/examdown/github-markdown.css}"
 am_svg="$prefix/lib/examdown/MathJax/MathJax.js?config=AM_SVG-full"
-body="$(cmark -e table -e strikethrough -e autolink --smart -t html "$in")"
+body="$(sed 's:~~\(.*\)~~:<span class="underline">\1</span>:g' "$in" |
+  cmark -e table -e strikethrough -e autolink --smart -t html)"
 
 cat <<EOF > examdown-temp.html
 <!DOCTYPE html>
@@ -77,6 +78,7 @@ cat <<EOF > examdown-temp.html
   <meta charset="utf-8" />
   <title>$title</title>
   <link rel="stylesheet" href="$css" />
+  <style> .underline { text-decoration: underline; } </style>
   <script type="text/x-mathjax-config">
     MathJax.Hub.Config({
       asciimath2jax: {
